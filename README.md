@@ -1,4 +1,4 @@
-# vector_canape_a2l_writer
+# Description
 Add new parameters or modify exisiting ones from .CSV file to Vector Canape .a2l file 
 
 # Why you might need this script?
