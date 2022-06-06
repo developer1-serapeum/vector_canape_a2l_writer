@@ -4,7 +4,7 @@ from openpyxl import load_workbook
 
 
 """
-The goal of this script write to read parameters from excel sheet
+The goal of this script is to read parameters from excel sheet
 """
 
 class SpreadSheetReader():
@@ -18,41 +18,22 @@ class SpreadSheetReader():
         """
         wb = load_workbook(filename = fileName)
         sheet_ranges = wb[tabName]
-        print(sheet_ranges['A2'].value)
-        print(sheet_ranges['E2'].value)
-        print(sheet_ranges['F2'].value)
-
-
-    def findPattern(self):
-        """
-        [For debug only] Finds a desired pattern within a text file
-        and writes it to an output file
-        """
-        file_in = 'compiler_in.txt'
-        file_out = 'compiler_warning_ids.txt'
-        pattern = re.compile(r"warning\s(#.+-.):")
+        print(sheet_ranges['A'+paremeterName].value)
         
-        match_count = 0
-        found_instances = []
-        for i, line in enumerate(open(file_in)):
-            for match in re.finditer(pattern, line):
-                print ('Found on line %s: %s' % (i+1, match.group()) )
-                found_instances.append(match.group(1))
-                match_count += 1
-
-        print("The pattern was found ({}) times".format(match_count))
-
-        with open(file_out, 'w') as f:
-            for line in found_instances:
-                f.write("%s\n" % line)
-
-
-    def print_rows(self):
+    def readAllParameters(self, fileName, tabName, column):
         """
-        [For debug only] It makes it easier to print all of your spreadsheet values by
-        just calling print_rows().
+        Read all parameters in the specified colum
         """
-        workbook = Workbook()
-        sheet = workbook.active
-        for row in sheet.iter_rows(values_only=True):
-            print(row)
+        wb = load_workbook(filename = fileName)
+        sheet_ranges = wb[tabName]
+        parameters = []
+
+        for row in range(2,sheet_ranges.max_row+1):  
+            cell_name = "{}{}".format(column, row)
+            cell_value = sheet_ranges[cell_name].value 
+            if (cell_value != None):
+                parameters.append(cell_value)
+
+        return parameters
+
+        

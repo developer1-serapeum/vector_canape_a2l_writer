@@ -15,8 +15,12 @@ REGEX_LIST = {
     'format': r".\sFORMAT \"(.+)\"",
 }
 
-def compareSmiWithA2L():
-    pass
+def getUniqueElments(list1, list2):
+    """
+    Compares list2 with list1 and return the items which only exist
+    in list2
+    """
+    z = list2.difference(list1)
 
 def findByRegex(line, regex):
     """
@@ -91,18 +95,36 @@ def getParametersA2L():
     
     return found_instances
 
+
+def writeOutputFile(inArray, outFile):
+    """
+    Gets an array with each element has exactly one line, then it will
+    write it to the defined output file
+    """
+        
+    with open(outFile, 'w', encoding='utf-8') as file:
+        file.writelines(data)
+
+
 ###############################################################################
 ### The Main Program                                                        ### 
 ###############################################################################
 
 if __name__ == "__main__":
 
-    #reader = SpreadSheetReader()
-    #reader.readParameter("./SMI_.xlsx", "Inputs", "V_VehicleSpeed")
+    reader = SpreadSheetReader()
+    #reader.readParameter("./SMI_Sample.xlsx", "Inputs", str(2))
+    csvParameters = reader.readAllParameters("./SMI_Sample.xlsx", "Inputs", "A")
+    print(csvParameters)
 
-    parameters = getParametersA2L()
+    
+    a2Lparameters = getParametersA2L()
+    print(a2Lparameters)
+    
+    print("CSV parameters count = ({}) times".format(len(csvParameters)))
+    print("A2L parameters count = ({}) times".format(len(a2Lparameters)))
 
-    for parmeter in parameters:
-        print(parmeter)
-
-    print("A2L parameters count = ({}) times".format(len(parameters)))
+    #with open('sample.a2l', 'r', encoding='utf-8') as file:
+    #    data = file.readlines()
+    #writeOutputFile(data, 'sample_out.a2l')
+    
